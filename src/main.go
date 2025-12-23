@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"sort"
 	"strconv"
 )
 
@@ -18,19 +19,24 @@ func inputInt(prompt string) int {
 
 }
 
+func handleScalesTime(scales []int) {
+	// scales_;
+
+}
 func main() {
 	pnumArgs := flag.Int("na", 2, "Number of scales to compare")
 	pScaleType := flag.String("s", "time", "Type of scale [time, distance]")
 	flag.Parse()
 	var scales []int
 	for i := 0; i < *pnumArgs; i++ {
-		prompt := fmt.Sprintf("Enter the %dth scale : > ", i)
+		prompt := fmt.Sprintf("Enter the %dth scale (increasing order) : > ", i)
 		scale := inputInt(prompt)
 		scales = append(scales, scale)
 	}
 	switch *pScaleType {
 	case "time":
-		fmt.Printf("You chose %s ?\n", *pScaleType)
+		handleScalesTime(scales[:])
+
 	case "distance":
 		fmt.Printf("You chose %s ?\n", *pScaleType)
 	}
