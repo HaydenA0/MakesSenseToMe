@@ -19,8 +19,8 @@ func inputInt(prompt string) int {
 }
 
 func main() {
-
 	pnumArgs := flag.Int("na", 2, "Number of scales to compare")
+	pScaleType := flag.String("s", "time", "Type of scale [time, distance]")
 	flag.Parse()
 	var scales []int
 	for i := 0; i < *pnumArgs; i++ {
@@ -28,5 +28,10 @@ func main() {
 		scale := inputInt(prompt)
 		scales = append(scales, scale)
 	}
-
+	switch *pScaleType {
+	case "time":
+		fmt.Printf("You chose %s ?\n", *pScaleType)
+	case "distance":
+		fmt.Printf("You chose %s ?\n", *pScaleType)
+	}
 }
