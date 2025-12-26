@@ -1,0 +1,39 @@
+diff --git a/src/main.go b/src/main.go
+index f3ddafc..639912a 100644
+--- a/src/main.go
++++ b/src/main.go
+@@ -18,9 +18,17 @@ func inputInt(prompt string) int {
+ 
+ }
+ 
+-func handleScalesTime(scales []int) {
+-	// scales_;
+-
++func handleScalesTime(scales []int) ([]int, error) {
++	// turn scales to seconds, raw seconds
++	var scalesTime []int
++	if scales[0] == 0 {
++		return []int{}, fmt.Errorf("Division by zero")
++	}
++	for _, scale := range scales {
++		inTime := scale / scales[0]
++		scalesTime = append(scalesTime, inTime)
++	}
++	return scalesTime, nil
+ }
+ func main() {
+ 	pnumArgs := flag.Int("na", 2, "Number of scales to compare")
+@@ -34,7 +42,12 @@ func main() {
+ 	}
+ 	switch *pScaleType {
+ 	case "time":
+-		handleScalesTime(scales[:])
++		scales_time, err := handleScalesTime(scales[:])
++		if err != nil {
++			fmt.Printf("Error in handleScalesTime")
++			return
++		}
++		fmt.Println(scales_time)
+ 
+ 	case "distance":
+ 		fmt.Printf("You chose %s ?\n", *pScaleType)
