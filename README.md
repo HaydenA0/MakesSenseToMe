@@ -1,0 +1,3 @@
+## Idea 
+Did you ever thought what is the difference in magnitude between one million and one billion then
+to be told the classic example that one billion is 31 years where one million is merely an 11 days

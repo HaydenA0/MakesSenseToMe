@@ -78,7 +78,7 @@ func getBestUnit(unitSlice []Unit, scaleSeconds float64) Unit {
 			return unit
 		}
 	}
-	return unitSlice[len(unitSlice)]
+	return unitSlice[len(unitSlice)-1]
 }
 
 func handleScales(scales []float64, unitSlice []Unit) {
