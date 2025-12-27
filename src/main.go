@@ -45,11 +45,11 @@ var distanceUnits = []Unit{
 	{"width_solar_system", 5900000000000000, 10},
 }
 
-func inputInt(prompt string) int {
+func inputToFloat(prompt string) float64 {
 	var buffer string
 	fmt.Printf("%s", prompt)
 	fmt.Scanln(&buffer)
-	o, err := strconv.Atoi(buffer)
+	o, err := strconv.ParseFloat(buffer, 64)
 	if err != nil {
 		fmt.Print("Error converting, enter an integer\n")
 	}
@@ -57,21 +57,21 @@ func inputInt(prompt string) int {
 
 }
 
-func prettyPrint(scales_index int, scaleSeconds float64, unit Unit) {
+func prettyPrint(scales_index float64, scaleSeconds float64, unit Unit) {
 	fmt.Println("+------------------+----------------------------+")
 	fmt.Printf("| %-16s | %-26v |\n", "OriginalValue", scales_index)
 	fmt.Printf("| %-16s | %-26.2f |\n", "ScaleValue", scaleSeconds/float64(unit.valueInBase))
 	fmt.Printf("| %-16s | %-26s |\n", "UnitName", unit.name)
 	fmt.Println("+------------------+----------------------------+")
 }
-func normalizeScale(scales []int) []float64 {
+func normalizeScale(scales []float64) []float64 {
 	normalizedScale := make([]float64, len(scales))
 	for index := range scales {
 		normalizedScale[index] = float64(scales[index]) / float64(scales[0])
 	}
 	return normalizedScale
 }
-func handleScales(scales []int, unitSlice []Unit) {
+func handleScales(scales []float64, unitSlice []Unit) {
 	normalizedScale := normalizeScale(scales)
 	for index, scaleSeconds := range normalizedScale {
 		for _, unit := range unitSlice {
@@ -87,10 +87,11 @@ func main() {
 	pnumArgs := flag.Int("na", 2, "Number of scales to compare")
 	pScaleType := flag.String("s", "time", "Type of scale [time, distance]")
 	flag.Parse()
-	var scales []int
+	var scales []float64
 	for i := 0; i < *pnumArgs; i++ {
+		// TODO : make this in a function and easy to use
 		prompt := fmt.Sprintf("Enter the %dth scale (increasing order) : > ", i)
-		scale := inputInt(prompt)
+		scale := inputToFloat(prompt)
 		scales = append(scales, scale)
 	}
 	switch *pScaleType {
