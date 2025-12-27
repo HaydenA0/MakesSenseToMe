@@ -71,15 +71,21 @@ func normalizeScale(scales []float64) []float64 {
 	}
 	return normalizedScale
 }
+
+func getBestUnit(unitSlice []Unit, scaleSeconds float64) Unit {
+	for _, unit := range unitSlice {
+		if scaleSeconds <= float64(unit.limit)*float64(unit.valueInBase) {
+			return unit
+		}
+	}
+	return unitSlice[len(unitSlice)]
+}
+
 func handleScales(scales []float64, unitSlice []Unit) {
 	normalizedScale := normalizeScale(scales)
 	for index, scaleSeconds := range normalizedScale {
-		for _, unit := range unitSlice {
-			if scaleSeconds <= float64(unit.limit)*float64(unit.valueInBase) {
-				prettyPrint(scales[index], scaleSeconds, unit)
-				break
-			}
-		}
+		unit := getBestUnit(unitSlice, scaleSeconds)
+		prettyPrint(scales[index], scaleSeconds, unit)
 	}
 }
 
