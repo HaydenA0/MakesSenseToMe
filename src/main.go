@@ -6,13 +6,22 @@ import (
 	"strconv"
 )
 
-var MINUTE = 60
-var HOUR = 3600
-var DAY = 86400
-var WEEK = 604800
-var MONTH = 2592000
-var YEAR = 31536000
-var CENTURY = 3153600000
+type Unit struct {
+	name           string
+	valueInSeconds int
+	limit          int
+}
+
+var timeUnits = []Unit{
+	{"second", 1, 60},
+	{"minute", 60, 60},
+	{"hour", 3600, 24},
+	{"day", 86400, 7},
+	{"week", 604800, 4},
+	{"month", 2592000, 12},
+	{"year", 31536000, 100},
+	{"century", 3153600000, 10},
+}
 
 func inputInt(prompt string) int {
 	var buffer string
@@ -26,73 +35,29 @@ func inputInt(prompt string) int {
 
 }
 
-func handleScalesTime(scales []int) ([]int, error) {
-
-	var scalesTime []int
-	if scales[0] == 0 {
-		return []int{}, fmt.Errorf("Cant compare to a zero (Division by Zero)")
-	}
-	for _, scale := range scales {
-		inTime := scale / scales[0]
-		scalesTime = append(scalesTime, inTime)
-	}
-	return scalesTime, nil
+func prettyPrint(scales_index int, scaleSeconds float32, unit Unit) {
+	fmt.Println("+------------------+----------------------------+")
+	fmt.Printf("| %-16s | %-26v |\n", "OriginalValue", scales_index)
+	fmt.Printf("| %-16s | %-26.2f |\n", "ScaleValue", scaleSeconds/float32(unit.valueInSeconds))
+	fmt.Printf("| %-16s | %-26s |\n", "UnitName", unit.name)
+	fmt.Println("+------------------+----------------------------+")
 }
-
-func timeScaleDecider(scalesTime []int) string {
-	biggestTime := scalesTime[len(scalesTime)-1]
-	if biggestTime <= 100*MINUTE {
-		return "Minutes"
-	} else if biggestTime <= 100*HOUR {
-		return "Hours"
-	} else if biggestTime <= 100*DAY {
-		return "Days"
-	} else if biggestTime <= 100*WEEK {
-		return "Weeks"
-	} else if biggestTime <= 100*MONTH {
-		return "Months"
-	} else if biggestTime <= 100*YEAR {
-		return "Years"
-	} else if biggestTime <= 100*CENTURY {
-		return "Centuries"
-	} else {
-		return "IDK lol"
+func handleTimeScale(scales []int) {
+	normalizedScale := make([]float32, len(scales))
+	for index := range scales {
+		normalizedScale[index] = float32(scales[index]) / float32(scales[0])
 	}
-}
-
-func printScaleComparaison(scalesTime []int, timeScale string) {
-	var denominatorFactor int
-	switch timeScale {
-	case "Minutes":
-		denominatorFactor = MINUTE
-	case "Hours":
-		denominatorFactor = HOUR
-	case "Days":
-		denominatorFactor = DAY
-	case "Weeks":
-		denominatorFactor = WEEK
-	case "Months":
-		denominatorFactor = MONTH
-	case "Years":
-		denominatorFactor = YEAR
-	case "Centuries", "Centruries":
-		denominatorFactor = CENTURY
-	default:
-		denominatorFactor = 1
-	}
-
-	fmt.Printf("\nRelative Comparison Table (Unit: %s)\n", timeScale)
-	fmt.Println("-------------------------------------------")
-	for i, seconds := range scalesTime {
-		scaledValue := float64(seconds) / float64(denominatorFactor)
-		if scaledValue < 0.01 {
-			fmt.Printf("Scale %d: %10.4f %s\n", i+1, scaledValue, timeScale)
-		} else {
-			fmt.Printf("Scale %d: %10.2f %s\n", i+1, scaledValue, timeScale)
+	fmt.Println("DEBUG : normalizedScale : ", normalizedScale)
+	for index, scaleSeconds := range normalizedScale {
+		for _, unit := range timeUnits {
+			if scaleSeconds <= float32(unit.limit)*float32(unit.valueInSeconds) {
+				prettyPrint(scales[index], scaleSeconds, unit)
+				break
+			}
 		}
 	}
-	fmt.Println("-------------------------------------------")
 }
+
 func main() {
 	pnumArgs := flag.Int("na", 2, "Number of scales to compare")
 	pScaleType := flag.String("s", "time", "Type of scale [time, distance]")
@@ -105,15 +70,7 @@ func main() {
 	}
 	switch *pScaleType {
 	case "time":
-		scalesTime, err := handleScalesTime(scales[:])
-		if err != nil {
-			fmt.Printf("Error in handleScalesTime : ")
-			fmt.Println(err)
-			return
-		}
-		fmt.Println("Debug : ", scalesTime)
-		timeScale := timeScaleDecider(scalesTime[:])
-		printScaleComparaison(scalesTime, timeScale)
+		handleTimeScale(scales[:])
 
 	case "distance":
 		fmt.Printf("You chose %s ?\n", *pScaleType)
