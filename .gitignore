@@ -1,0 +1,26 @@
+# Go
+/server
+/bin/
+*.exe
+*.test
+*.out
+*.prof
+
+# Node / Vite
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Logs / runtime
+*.log
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local
