@@ -1,0 +1,3 @@
+- [ ] Keep a memory of the latest measurements
+- [ ] Be able to save measurements
+- [ ] When chaging from distance to time, the thing should not reset

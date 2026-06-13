@@ -1,11 +1,15 @@
 :root {
   color-scheme: dark;
-  --bg: #0b0d12;
-  --panel: #141823;
+  --bg: #0a0c11;
+  --panel: #131725;
+  --panel-2: #181d31;
   --fg: #e6e8ee;
   --muted: #8a91a4;
-  --accent: #7cc4ff;
-  --grid: #1f2433;
+  --muted-2: #5e6479;
+  --accent: #7c6dff;
+  --accent-soft: #a99dff;
+  --accent-glow: rgba(124, 109, 255, 0.35);
+  --grid: #1f2538;
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
@@ -14,13 +18,17 @@
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100%;
   background: var(--bg);
   color: var(--fg);
 }
 
 #app {
-  min-height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+button {
+  font-family: inherit;
 }

@@ -19,12 +19,15 @@ var TimeUnits = []Unit{
 	{"day", 86400, 7},
 	{"week", 604800, 4},
 	{"month", 2592000, 12},
-	{"year", 31536000, 100},
+	{"year", 31536000, 10},
 	{"decade", 315360000, 10},
 	{"century", 3153600000, 10},
 	{"millennium", 31536000000, 10},
-	{"geological_era", 3153600000000, 10},
-	{"age_of_earth", 1.38e17, 10},
+	{"myriad", 315360000000, 10},            // 10,000 years
+	{"ice_age_cycle", 3153600000000, 10},    // 100,000 years
+	{"million_years", 31536000000000, 10},   // 1,000,000 years
+	{"billion_years", 31536000000000000, 4}, // 1,000,000,000 years
+	{"age_of_earth", 1.38e17, 3},
 	{"age_of_universe", 4.35e17, 10},
 }
 
